@@ -1,0 +1,34 @@
+	QStringList oneNode;
+	QDir m_FileDir(m_strDataPath);
+	m_FileDir.setFilter(QDir::Files | QDir::NoSymLinks);
+	QStringList filters;
+	filters<<QString("*.csv");//<<QString("*.htp")<<QString("*.RD");
+	//定义迭代器并设置过滤器
+
+	QDirIterator dir_iterator(m_FileDir.path(),filters,QDir::Files | QDir::NoSymLinks,QDirIterator::Subdirectories);
+	QString  Notename;
+	QString strDate;
+	while(dir_iterator.hasNext())
+	{
+		dir_iterator.next();
+		QFileInfo file_info = dir_iterator.fileInfo();
+		QString strFileName=file_info.fileName();
+		QByteArray byteDate=strFileName.toLatin1().data();
+		strDate=byteDate.mid(0,8);
+		/*if (file_info.suffix()=="htp")
+		{
+		strDate=strFileName.left(strFileName.indexOf('.'));
+		}*/
+		m_vAllFileInfor.append(file_info);
+		QMap<QString,QStringList>::Iterator it=m_mALLTreeNode.find(strDate);
+		if (it != m_mALLTreeNode.end())
+		{
+			it.value().append(strFileName);
+		}
+		else
+		{
+			QStringList listTemp;
+			listTemp<<strFileName;
+			m_mALLTreeNode.insert(strDate,listTemp);
+		}
+		}

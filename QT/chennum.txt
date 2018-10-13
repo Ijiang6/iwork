@@ -1,0 +1,14 @@
+uchar WTHTOOLS::CPubTools::getCheckSum(const QByteArray & byte)
+{
+	uchar ubyCrc = 0;
+	for (int  i =0; i < byte.size(); i++)
+	{
+		uchar ubyData = byte.at(i);
+		ubyCrc = ubyCrc ^ ubyData;
+	}
+	return ubyCrc;
+}
+typedef unsigned char uchar;
+typedef unsigned short ushort;
+typedef unsigned int uint;
+typedef unsigned long ulong;

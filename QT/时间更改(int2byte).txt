@@ -1,0 +1,21 @@
+/*时间更改 */
+/*时间 int  转成byteArry*/
+	QByteArray timeByteArray;
+	timeByteArray.resize(4);
+	QByteArray temp;
+	int iPos = 0;
+	int iTimes = 0;
+	QDateTime newDateTime;
+	memcpy((char *)&iTimes, date.data()+iPos, 4);
+	newDateTime.setDate(QDateTime::currentDateTime().date());
+	newDateTime.setTime(QDateTime::fromTime_t(iTimes).time());
+	iTimes=newDateTime.toTime_t();
+	QString  str=newDateTime.toString("yyyy-MM-dd hh:mm:ss");
+	timeByteArray[0] = (uchar)  (0x000000ff & iTimes);  
+	timeByteArray[1] = (uchar) ((0x0000ff00 &iTimes) >> 8);  
+	timeByteArray[2] = (uchar) ((0x00ff0000 & iTimes) >> 16);  
+	timeByteArray[3] = (uchar) ((0xff000000 & iTimes) >> 24);  
+	//date.remove(0,4);
+	//memcpy(&timeByteArray, date.data(), date.size());
+	int x=timeByteArray.size();
+	byteResult=date.replace(0,4,timeByteArray,4);
