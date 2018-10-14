@@ -5,6 +5,8 @@
 #include<arpa/inet.h>
 #include<iostream>
 #include<string.h>
+#include<assert.h>
+#include"c++Tool.h"
 #include<sys/select.h>
 #define MAXLINKS 5
 using std::cout;
@@ -24,6 +26,7 @@ class tcp_server
     void init_select();
     void selectIO();
     int update_maxfd();
+    int byte_to_int(const char *pbuf);
     void add_newclient(int clietn_conn);
  private:
     struct sockaddr_in s_addr;

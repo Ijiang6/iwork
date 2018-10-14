@@ -77,14 +77,59 @@ bool tcp_server::s_accept()
     }
 
 }
+int tcp_server::byte_to_int(const char *pbuf)
+{
+   return  cplusplusTool::byte_to_int(pbuf);
+}
 bool tcp_server::data_recv(int icon)
-{   memset(buf,0,sizeof(buf)); 
+{   icon=iconn;
+    memset(buf,0,sizeof(buf)); 
     read(icon,buf,sizeof(buf));
-    cout<<buf<<endl;
+    cout<<"recv:"<<buf<<endl;
+    assert(buf[0]=='$'|| buf[0]=='@');
+    char size[4];
+    bzero(size,4);
+    char *pData=buf;
+    pData++;
+    //file_type_size
+    memcpy(size,pData,4);
+    cout<<"size:"<<size<<endl;
+    int isize=byte_to_int(size);
+    cout<<"int size:"<<isize<<endl;
+    char temp[1024];
+    bzero(temp,1024);
+    pData+=4;
+    //file_type
+    memcpy(temp,pData,isize);
+    string file_type=temp;
+    pData+=isize;
+    bzero(size,4);
+    //file_name_size
+    memcpy(size,pData,4);
+    isize=byte_to_int(size);
+    bzero(temp,1024);
+    //file_name
+    memcpy(temp,pData,isize);
+    string file_name=temp;
+    pData+=isize;
+    //file_data_size
+    bzero(size,4);
+    memcpy(size,pData,4);
+    isize=byte_to_int(size);
+    string strdata;
+    if(buf[0] != '@')
+    {
+    bzero(temp,1024);
+    pData+=isize;
+    memcpy(temp,pData,isize);
+     strdata=pData;
+    }
+    cout<<"file_type:"<<file_type<<"file_name"<<file_name<<"datasize"<<isize<<"data"<<buf<<endl;
+
 }
 bool tcp_server::date_write(int icon)
 {
-
+    icon=iconn;
     write(icon,buf,sizeof(buf));
 
 }
@@ -178,7 +223,10 @@ int  main(int argc ,char*argv[])
    server.sock_bind();
    server.s_listen(MAXLINKS);
     server.init_select();
-    server.selectIO();
+    server.s_accept();
+    server.data_recv(1);
+    server.date_write(1);
+   // server.selectIO();
 return 0;
 
 }

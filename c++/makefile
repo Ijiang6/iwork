@@ -1,5 +1,5 @@
 CC:= g++
-TARGET:= threadpool
+TARGET:=threadpool
 #INCLUDE:= -I./
 LIBS:= -lpthread
 # C++语言编译参数  
