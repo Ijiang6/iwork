@@ -12,13 +12,17 @@ while True:
     byte_itype=(3).to_bytes(4,byteorder='little')
     str_name='test'.encode()
     byte_iname=(4).to_bytes(4,byteorder='little')
-    byte_isize=(1024).to_bytes(4,byteorder='little')
-    sdata='$'.encode()+(byte_itype)+str_type+(byte_iname)+str_name+(byte_isize)
+    file_data='this is a test\n'.encode()
+    data_size=len(file_data)
+    byte_isize=(data_size).to_bytes(4,byteorder='little')
+    sdata=b'$'+(byte_itype)+str_type+(byte_iname)+str_name+(byte_isize)+file_data
 #     data = input(">")
  #    if not data:
  #        break
     tctimeClient.send(sdata)
     print('seend data:'+str(sdata))
+    print('data_size:'+str(data_size))
     print( tctimeClient.recv(BUFFSIZE).decode())
+    break
     # print(data)
 tctimeClient.close()

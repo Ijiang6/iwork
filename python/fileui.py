@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QFileDialog
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -40,6 +40,9 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
+        self.toolButton.clicked.connect(lambda: self.slot_tbfile())
+        self.pushButton_2.clicked.connect(lambda: self.slot_pbok())
+        self.pushButton.clicked.connect(lambda: self.slot_pbcancel())
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -50,6 +53,18 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "filename"))
         self.pushButton.setText(_translate("Form", "cancel"))
         self.pushButton_2.setText(_translate("Form", "ok"))
+  #  def __init__(self):
+       # self.pushButton.clicked.connect(lambda: self.slot_pbcancel())
+       # self.pushButton_2.clicked.connect(lambda: self.slot_pbok())
+       # self.toolButton.clicked.connect(lambda: self.slot_tbfile())
+    def slot_pbok(self):
+        pass
+    def slot_pbcancel(self):
+        self.label.setText(_translate("Form"," "))
+    def slot_tbfile(self):
+        file_name,file_type = QFileDialog.getOpenFileName(self,"文件选择","./")
+        print(file_name+file_type)
+
 if __name__=='__main__':
 
     app=QtWidgets.QApplication(sys.argv)
