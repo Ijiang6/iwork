@@ -12,6 +12,11 @@ public:
       iNum |= ((bytes[3] << 24) & 0xFF000000);
       return iNum;
   }
+  static char * int_to_4byte(int iNum)
+  {
+  
+  
+  }
 
 
 };

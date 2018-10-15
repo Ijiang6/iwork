@@ -8,6 +8,7 @@
 #include<assert.h>
 #include"c++Tool.h"
 #include<sys/select.h>
+#include"file_task.h"
 #define MAXLINKS 5
 using std::cout;
 using std::endl;
@@ -38,5 +39,6 @@ class tcp_server
     char buf[1024];
     fd_set readset;
     fd_set allset;
+    file_task m_file_task;
 };
 #endif

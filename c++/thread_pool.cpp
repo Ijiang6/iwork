@@ -6,11 +6,21 @@ CThread_Pool::CThread_Pool()
 CThread_Pool::~CThread_Pool()
 {
 }
+CThread_Pool *CThread_Pool::m_pInstance=NULL;
 vector<CThread_Task*> CThread_Pool::m_vecTask;
 bool CThread_Pool::bDestory = false;
 //CMutexConnTool::getInstance()->mutex_conn_init(&m_condition);
 pthread_mutex_t CThread_Pool::pmutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t CThread_Pool::pcond = PTHREAD_COND_INITIALIZER;
+CThread_Pool* CThread_Pool::getInstance()
+{
+    if(m_pInstance == NULL)
+    {
+	m_pInstance = new CThread_Pool();
+    }
+    return m_pInstance;
+
+}
 void CThread_Pool::setDestory(bool bTrue)
 {
 	bDestory=bTrue;

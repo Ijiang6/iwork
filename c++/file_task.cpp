@@ -1,7 +1,6 @@
 #include"file_task.h"
 file_task::file_task():CThread_Task()
 {
-    memset(buf,0,sizeof(buf));
 
 }
 file_task::~file_task()
@@ -34,15 +33,15 @@ void file_task::readFile()
     cout<<"fileLines:"<<vfile.size()<<endl;
     m_Instream.close();
 }
-void file_task::writefile()
+void file_task::writefile(const char *pStrData)
 {
-  m_Outstream.open(m_strOutFile);
+  m_Outstream.open(m_strOutFile,ios::app);
   if(!m_Outstream.is_open())
   {
    cout<<"open writefile faield"<<endl;
    return;
   }
-  m_Outstream<<buf;
+  m_Outstream<<pStrData;
   m_Outstream.flush();
   m_Outstream.close();
 }

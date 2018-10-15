@@ -86,6 +86,8 @@ bool tcp_server::data_recv(int icon)
     memset(buf,0,sizeof(buf)); 
     read(icon,buf,sizeof(buf));
     cout<<"recv:"<<buf<<endl;
+    //$+4+type+4+name+4+data
+    //@+4+type+4+name+4(file_size)
     assert(buf[0]=='$'|| buf[0]=='@');
     char size[4];
     bzero(size,4);
@@ -93,9 +95,7 @@ bool tcp_server::data_recv(int icon)
     pData++;
     //file_type_size
     memcpy(size,pData,4);
-    cout<<"size:"<<size<<endl;
     int isize=byte_to_int(size);
-    cout<<"int size:"<<isize<<endl;
     char temp[1024];
     bzero(temp,1024);
     pData+=4;
@@ -109,6 +109,7 @@ bool tcp_server::data_recv(int icon)
     isize=byte_to_int(size);
     bzero(temp,1024);
     //file_name
+    pData+=4;
     memcpy(temp,pData,isize);
     string file_name=temp;
     pData+=isize;
@@ -120,12 +121,17 @@ bool tcp_server::data_recv(int icon)
     if(buf[0] != '@')
     {
     bzero(temp,1024);
-    pData+=isize;
+    pData+=4;
     memcpy(temp,pData,isize);
-     strdata=pData;
+     strdata=temp;
     }
-    cout<<"file_type:"<<file_type<<"file_name"<<file_name<<"datasize"<<isize<<"data"<<buf<<endl;
-
+    cout<<"file_type->"<<file_type<<endl<<"file_name->"<<file_name<<endl<<"datasize->"<<isize<<endl<<"data->"<<strdata<<endl;
+    //thread pool write data
+    //<1>create file task 
+    string strfile="./exe/"+file_name+"."+file_type;
+    m_file_task.setOutFIle(strfile);
+    m_file_task.writefile(strdata.data());
+//    CThread_Pool::getInstance()->addTask(m_file_task);
 }
 bool tcp_server::date_write(int icon)
 {

@@ -15,14 +15,12 @@ public:
     void setInFile(const string & strPath);
     void setOutFIle(const string & strPath);
     void readFile();
-    void writefile();	
+    void writefile(const char *pStrData);	
 private:
     string m_strInFile;
     string m_strOutFile;
     ifstream m_Instream;
     ofstream m_Outstream;
-    char buf[1024];
-
 
 };
 #endif

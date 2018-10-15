@@ -14,6 +14,7 @@ public:
 	CThread_Pool();
 	~CThread_Pool();
 	void setMaxThreadNum(const int iMaxNum);
+	static CThread_Pool* getInstance();
 	static void* threadFunc(void *args);
 	void CreateThread();
 	void addTask(CThread_Task *pTask);
@@ -28,5 +29,7 @@ private:
 	static mutex_conn m_condition;
     static pthread_mutex_t pmutex;
     static pthread_cond_t pcond;
+public:
+    static CThread_Pool *m_pInstance;
 };
 #endif 
