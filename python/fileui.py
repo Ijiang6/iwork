@@ -62,7 +62,7 @@ class Ui_Form(object):
     def slot_pbcancel(self):
         self.label.setText(_translate("Form"," "))
     def slot_tbfile(self):
-        file_name,file_type = QFileDialog.getOpenFileName(self,"文件选择","./")
+        file_name,file_type = QFileDialog.getOpenFileName(Form, "打开文件", "./", "All Files (*);;Text Files (*.)")
         print(file_name+file_type)
 
 if __name__=='__main__':
