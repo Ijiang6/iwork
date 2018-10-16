@@ -81,6 +81,10 @@ int tcp_server::byte_to_int(const char *pbuf)
 {
    return  cplusplusTool::byte_to_int(pbuf);
 }
+char * tcp_server::int_to_byte(int iNum)
+{
+ return cplusplusTool::int_to_byte(iNum);
+}
 bool tcp_server::data_recv(int icon)
 {   icon=iconn;
     memset(buf,0,sizeof(buf)); 
@@ -128,15 +132,35 @@ bool tcp_server::data_recv(int icon)
     cout<<"file_type->"<<file_type<<endl<<"file_name->"<<file_name<<endl<<"datasize->"<<isize<<endl<<"data->"<<strdata<<endl;
     //thread pool write data
     //<1>create file task 
-    string strfile="./exe/"+file_name+"."+file_type;
+    string strfile="./temp/"+file_name+"."+file_type;
     m_file_task.setOutFIle(strfile);
     m_file_task.writefile(strdata.data());
 //    CThread_Pool::getInstance()->addTask(m_file_task);
+    date_write(iconn,file_type,file_name,strdata);
 }
-bool tcp_server::date_write(int icon)
+bool tcp_server::date_write(int icon,const string &strType,const string & strName,const string &strData)
 {
+    //$+4byte+strType+4byte+strNmae+4byte+strData
+    string strPacket;
     icon=iconn;
-    write(icon,buf,sizeof(buf));
+    
+    char chs='$';
+    char *pchsSize=NULL;
+    strPacket.append(&chs);
+    
+    pchsSize=int_to_byte(strType.size());
+    strPacket.append(pchsSize,4);
+    strPacket.append(strType);
+    
+    pchsSize=int_to_byte(strName.size());
+    strPacket.append(pchsSize,4);
+    strPacket.append(strName);
+
+    pchsSize=int_to_byte(strData.size());
+    strPacket.append(pchsSize,4);
+    strPacket.append(strData);
+
+    write(icon,strPacket.c_str(),strPacket.size());
 
 }
 int tcp_server::update_maxfd()
@@ -213,7 +237,7 @@ void tcp_server::selectIO()
 	if(FD_ISSET(icon,&readset))
 	{
 	    data_recv(icon);
-	    date_write(icon);
+	  //  date_write(icon);
 	} 
     }
  }
@@ -231,7 +255,7 @@ int  main(int argc ,char*argv[])
     server.init_select();
     server.s_accept();
     server.data_recv(1);
-    server.date_write(1);
+   // server.date_write(1);
    // server.selectIO();
 return 0;
 

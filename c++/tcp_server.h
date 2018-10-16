@@ -23,11 +23,12 @@ class tcp_server
     bool s_listen(int imax_links);
     bool s_accept();
     bool data_recv(int icon);
-    bool date_write(int icon);
+    bool date_write(int icon,const string &strType,const string & strName,const string &strData);
     void init_select();
     void selectIO();
     int update_maxfd();
     int byte_to_int(const char *pbuf);
+    char * int_to_byte(int iNum);
     void add_newclient(int clietn_conn);
  private:
     struct sockaddr_in s_addr;
