@@ -57,13 +57,28 @@ class Ui_Form(object):
        # self.pushButton.clicked.connect(lambda: self.slot_pbcancel())
        # self.pushButton_2.clicked.connect(lambda: self.slot_pbok())
        # self.toolButton.clicked.connect(lambda: self.slot_tbfile())
+
     def slot_pbok(self):
         pass
+
     def slot_pbcancel(self):
-        self.label.setText(_translate("Form"," "))
+        self.label.setText(" ")
+
+    def file_msg(self,strPath):
+        filePath=strPath.strip()
+        pathArry=filePath.split('/')
+        fileMsg=pathArry[-1]
+        locdot=fileMsg.index('.')
+        fname=fileMsg[0:locdot]
+        ftype=fileMsg[locdot:]
+        return fname,ftype
+
     def slot_tbfile(self):
-        file_name,file_type = QFileDialog.getOpenFileName(Form, "打开文件", "./", "All Files (*);;Text Files (*.)")
-        print(file_name+file_type)
+        file_path,file_type = QFileDialog.getOpenFileName(Form, "打开文件", "./", "All Files (*);;Text Files (*.)")
+        print(file_path+"<<<>>>"+file_type)
+        self.label.setText(file_path)
+        fname,ftype=self.file_msg(file_path)
+        print(fname,ftype)
 
 if __name__=='__main__':
 
