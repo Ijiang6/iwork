@@ -245,9 +245,18 @@ void tcp_server::selectIO()
 
 
 }
+void tcp_server::readfiletest()
+{
+    pfile=new file_task();
+    pfile->setInFile("./demo.txt");
+    pfile->setRun(true);
+    CThread_Pool::getInstance()->addTask(pfile);
+
+}
 int  main(int argc ,char*argv[])
 {
    tcp_server server;
+   server.readfiletest();
    server.create_sock();
    server.sock_addr_init(8989);
    server.sock_bind();

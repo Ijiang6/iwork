@@ -16,11 +16,17 @@ public:
     void setOutFIle(const string & strPath);
     void readFile();
     void writefile(const char *pStrData);	
+    void setRun(bool bread);
+    virtual void* run();
+    const string popOnestr();
 private:
     string m_strInFile;
     string m_strOutFile;
     ifstream m_Instream;
     ofstream m_Outstream;
+    bool m_bFinsh;
+    bool m_bread;
+    vector<string>vfile;
 
 };
 #endif

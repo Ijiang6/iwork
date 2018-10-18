@@ -8,7 +8,9 @@
 #include<assert.h>
 #include"c++Tool.h"
 #include<sys/select.h>
+#include"thread_task.h"
 #include"file_task.h"
+#include"thread_pool.h"
 #define MAXLINKS 5
 using std::cout;
 using std::endl;
@@ -30,6 +32,7 @@ class tcp_server
     int byte_to_int(const char *pbuf);
     char * int_to_byte(int iNum);
     void add_newclient(int clietn_conn);
+    void readfiletest();
  private:
     struct sockaddr_in s_addr;
     int isockfd;
@@ -41,5 +44,6 @@ class tcp_server
     fd_set readset;
     fd_set allset;
     file_task m_file_task;
+    file_task *pfile;
 };
 #endif

@@ -26,10 +26,14 @@ void file_task::readFile()
 	cout<<"open readfile failed"<<endl;
     return ;
     }
-   while(getline(m_Instream,strTemp))
+    while(!m_Instream.eof())
    {
+       m_Instream.read(buf,1);
+       strTemp.append(buf,1);
        vfile.push_back(strTemp);
+       strTemp.clear();
    }
+    m_bFinsh=true;
     cout<<"fileLines:"<<vfile.size()<<endl;
     m_Instream.close();
 }
@@ -44,4 +48,31 @@ void file_task::writefile(const char *pStrData)
   m_Outstream<<pStrData;
   m_Outstream.flush();
   m_Outstream.close();
+}
+const string file_task::popOnestr()
+{
+    string str;
+    vector<string>::iterator it=vfile.begin();
+    cout<<"cfile size:"<<vfile.size();
+    if(it != vfile.end())
+    {
+        str=*it;
+        vfile.erase(it);
+    }
+    return str;
+}
+void file_task::setRun(bool bread)
+{
+    m_bread=bread;
+}
+void* file_task::run()
+{
+    if(m_bread)
+    {
+        readFile();
+    }
+    else
+    {
+        writefile();
+    }
 }

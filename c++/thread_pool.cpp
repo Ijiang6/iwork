@@ -17,6 +17,8 @@ CThread_Pool* CThread_Pool::getInstance()
     if(m_pInstance == NULL)
     {
 	m_pInstance = new CThread_Pool();
+        m_pInstance->setMaxThreadNum(3);
+        m_pInstance->CreateThread();
     }
     return m_pInstance;
 
