@@ -11,6 +11,7 @@ void tcp_server::init_select()
 {
  FD_ZERO(&readset);
  FD_ZERO(&allset);
+ FD_ZERO(&writeset);
  for(int iTrun=0;iTrun<MAXLINKS;iTrun++)
  {
      client[iTrun]=-1;
@@ -85,6 +86,34 @@ char * tcp_server::int_to_byte(int iNum)
 {
  return cplusplusTool::int_to_byte(iNum);
 }
+void tcp_server::insertOneLineStr(const string & strName,const string & strLine)
+{
+
+    map<string,vector<string>>::iterator it=m_mapfile.find(strName);
+    if(it != m_mapfile.end())
+    {
+	it->second.push_back(strLine);
+    }
+    else
+    {
+	vector<string> vecfile;
+	vecfile.push_back(strLine);
+	m_mapfile[strName]=vecfile;
+    }
+
+
+}
+void tcp_server::saveFile(const string & strFile)
+{
+
+    map<string,vector<string>>::iterator it=m_mapfile.find(strFile);
+    if(it != m_mapfile.end())
+    {
+	 m_file_task.setOutFIle(strFile);
+	m_file_task.setRun(false);
+        CThread_Pool::getInstance()->addTask(&m_file_task);
+    }
+}
 bool tcp_server::data_recv(int icon)
 {   icon=iconn;
     memset(buf,0,sizeof(buf)); 
@@ -122,6 +151,12 @@ bool tcp_server::data_recv(int icon)
     memcpy(size,pData,4);
     isize=byte_to_int(size);
     string strdata;
+    string strfile="./temp/"+file_name+"."+file_type;
+    if(strdata == "$#$")
+    {
+    //one file recv finsh
+	saveFile(strfile);    
+    }
     if(buf[0] != '@')
     {
     bzero(temp,1024);
@@ -130,13 +165,8 @@ bool tcp_server::data_recv(int icon)
      strdata=temp;
     }
     cout<<"file_type->"<<file_type<<endl<<"file_name->"<<file_name<<endl<<"datasize->"<<isize<<endl<<"data->"<<strdata<<endl;
-    //thread pool write data
-    //<1>create file task 
-    string strfile="./temp/"+file_name+"."+file_type;
-    m_file_task.setOutFIle(strfile);
-    m_file_task.writefile(strdata.data());
-//    CThread_Pool::getInstance()->addTask(m_file_task);
-    date_write(iconn,file_type,file_name,strdata);
+    //save one line  data(temp)
+    insertOneLineStr(strfile,strdata);
 }
 bool tcp_server::date_write(int icon,const string &strType,const string & strName,const string &strData)
 {
@@ -161,7 +191,7 @@ bool tcp_server::date_write(int icon,const string &strType,const string & strNam
     strPacket.append(strData);
 
     write(icon,strPacket.c_str(),strPacket.size());
-
+    return true;
 }
 int tcp_server::update_maxfd()
 {
@@ -208,12 +238,14 @@ void tcp_server::selectIO()
  while(1)
  {
     FD_ZERO(&readset);
+    FD_ZERO(&writeset);
     //readset=allset;
     memcpy(&readset,&allset,sizeof(allset));
+    writeset=readset;
     maxfd=update_maxfd();
     cout<<"maxfd:"<<maxfd<<"isockfd:"<<isockfd<<endl;
   //  FD_SET(isockfd,&readset);
-    int ireadynum=select(maxfd+1,&readset,NULL,NULL,&timer);
+    int ireadynum=select(maxfd+1,&readset,&writeset,NULL,&timer);
     cout<<"ireadnum:"<<ireadynum<<endl;
     if(ireadynum < 0 || ireadynum == 0 )
     {
@@ -237,8 +269,12 @@ void tcp_server::selectIO()
 	if(FD_ISSET(icon,&readset))
 	{
 	    data_recv(icon);
-	  //  date_write(icon);
 	} 
+	if(FD_ISSET(icon,&writeset))
+	{
+	    string strLine=pfile->popOnestr();
+	  date_write(icon,fileType,fileName,strLine);
+	}
     }
  }
 
@@ -250,6 +286,8 @@ void tcp_server::readfiletest()
     pfile=new file_task();
     pfile->setInFile("./demo.txt");
     pfile->setRun(true);
+    fileType="txt";
+    fileName="demo";
     CThread_Pool::getInstance()->addTask(pfile);
 
 }

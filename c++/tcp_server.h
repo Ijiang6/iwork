@@ -11,6 +11,8 @@
 #include"thread_task.h"
 #include"file_task.h"
 #include"thread_pool.h"
+#include<map>
+#include<vector>
 #define MAXLINKS 5
 using std::cout;
 using std::endl;
@@ -33,6 +35,8 @@ class tcp_server
     char * int_to_byte(int iNum);
     void add_newclient(int clietn_conn);
     void readfiletest();
+    void insertOneLineStr(const string & strName,const string &strLine);
+    void saveFile(const string & strFile);
  private:
     struct sockaddr_in s_addr;
     int isockfd;
@@ -41,9 +45,13 @@ class tcp_server
     int ilisten;
     int client[MAXLINKS];
     char buf[1024];
+    map<string,vector<string>>m_mapfile;
     fd_set readset;
     fd_set allset;
+    fd_set writeset;
     file_task m_file_task;
+    string fileType;
+    string fileName;
     file_task *pfile;
 };
 #endif

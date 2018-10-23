@@ -6,6 +6,7 @@
 #include<string>
 #include<cstring>
 #include<iostream>
+#include <assert.h>
 using namespace std;
 class file_task:public CThread_Task
 {
@@ -15,7 +16,8 @@ public:
     void setInFile(const string & strPath);
     void setOutFIle(const string & strPath);
     void readFile();
-    void writefile(const char *pStrData);	
+    void writefile();	
+    void setWriteFile(const vector<string> & vecFile);
     void setRun(bool bread);
     virtual void* run();
     const string popOnestr();
@@ -24,9 +26,10 @@ private:
     string m_strOutFile;
     ifstream m_Instream;
     ofstream m_Outstream;
+    char buf[1024];
     bool m_bFinsh;
     bool m_bread;
-    vector<string>vfile;
+    vector<string> vfile;
 
 };
 #endif

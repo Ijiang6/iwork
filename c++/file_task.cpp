@@ -28,8 +28,8 @@ void file_task::readFile()
     }
     while(!m_Instream.eof())
    {
-       m_Instream.read(buf,1);
-       strTemp.append(buf,1);
+       m_Instream.read(buf,900);
+       strTemp.append(buf,900);
        vfile.push_back(strTemp);
        strTemp.clear();
    }
@@ -37,7 +37,7 @@ void file_task::readFile()
     cout<<"fileLines:"<<vfile.size()<<endl;
     m_Instream.close();
 }
-void file_task::writefile(const char *pStrData)
+void file_task::writefile()
 {
   m_Outstream.open(m_strOutFile,ios::app);
   if(!m_Outstream.is_open())
@@ -45,8 +45,13 @@ void file_task::writefile(const char *pStrData)
    cout<<"open writefile faield"<<endl;
    return;
   }
-  m_Outstream<<pStrData;
-  m_Outstream.flush();
+  assert(vfile.size()>0);
+  vector<string>::iterator it=vfile.begin();
+  for(;it != vfile.end();it++)
+    {
+    m_Outstream<<*it;
+    m_Outstream.flush();
+    }
   m_Outstream.close();
 }
 const string file_task::popOnestr()
@@ -60,6 +65,16 @@ const string file_task::popOnestr()
         vfile.erase(it);
     }
     return str;
+}
+void file_task::setWriteFile(const vector<string> & vecFile)
+{
+    vfile.clear();
+    if(!vecFile.empty())
+    {
+	vfile=vecFile;
+    }
+
+
 }
 void file_task::setRun(bool bread)
 {
@@ -75,4 +90,5 @@ void* file_task::run()
     {
         writefile();
     }
+    return (void *)0;
 }
