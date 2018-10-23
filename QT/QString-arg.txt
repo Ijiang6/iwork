@@ -1,0 +1,4 @@
+QString strMsg = QString("time = %1, outdatatype = %2, sendSize=%3")
+		.arg(dataTime.toString("yyyyMMdd-hhmm"))
+		.arg(datatype)
+		.arg(data.size());
