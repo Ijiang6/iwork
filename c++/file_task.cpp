@@ -29,7 +29,7 @@ void file_task::readFile()
     while(!m_Instream.eof())
    {
        m_Instream.read(buf,900);
-       strTemp.append(buf,900);
+       strTemp.append(buf,strlen(buf));
        vfile.push_back(strTemp);
        strTemp.clear();
    }

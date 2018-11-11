@@ -13,6 +13,7 @@
 #include"thread_pool.h"
 #include<map>
 #include<vector>
+#include<signal.h>
 #define MAXLINKS 5
 using std::cout;
 using std::endl;

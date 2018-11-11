@@ -16,6 +16,7 @@ void tcp_server::init_select()
  {
      client[iTrun]=-1;
  }
+ //signal(SIGALRM,selectIO);
 }
 bool tcp_server::sock_addr_init(int iport)
 {
@@ -69,6 +70,8 @@ bool tcp_server::s_accept()
     if(iconn>0)
     {   
 	cout<<"receive new connection"<<endl;
+	add_newclient(iconn);
+	FD_SET(iconn,&allset);
 	return true;
 
     }
@@ -203,6 +206,7 @@ int tcp_server::update_maxfd()
 	    if(iTrun>maxtemp)
 	    {
 	    maxtemp=iTrun;
+	    break;
 	    }
 	}
     }
@@ -235,7 +239,7 @@ void tcp_server::selectIO()
  timer.tv_sec=10;
  timer.tv_usec=0;
  
- while(1)
+// while(1)
  {
     FD_ZERO(&readset);
     FD_ZERO(&writeset);
@@ -257,7 +261,6 @@ void tcp_server::selectIO()
 	s_accept();
 	add_newclient(iconn);
 	FD_SET(iconn,&allset);
-	FD_CLR(isockfd,&allset);
     }   
     for(int iTrun =0 ;iTrun <MAXLINKS; iTrun++)
     {
