@@ -34,7 +34,7 @@ def tcp_recv(byte):
     print(byte[0])
     chbhead=chr(byte[0])
     if(chbhead =='$'):
-        btype=byte[1:4]
+        btype=byte[1:5]
         loc=5
         itype=int.from_bytes(btype,byteorder = 'little')
         stype=byte[loc:loc+itype]
