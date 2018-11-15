@@ -2,6 +2,7 @@
 from socket import *
 from filetool import *
 file_name=''
+balldata=bytes()
 def tcp_lient(HOST,PORT):
     ADDR=(HOST,PORT)
     tctimeClient= socket(AF_INET,SOCK_STREAM)
@@ -30,6 +31,7 @@ def tcp_send(str_type,str_name,str_data):
     return sdata
 def tcp_recv(byte):
     global file_name
+    global balldata
     print(len(byte))
     print(byte[0])
     chbhead=chr(byte[0])
@@ -39,8 +41,6 @@ def tcp_recv(byte):
         itype=int.from_bytes(btype,byteorder = 'little')
         stype=byte[loc:loc+itype]
         loc+=itype
-        bname=byte[loc:loc+4]
-        iname=int.from_bytes(bname,byteorder='little')
         loc+=4
         sname=byte[loc:loc+iname]
         sfile=(sname.decode())+'.'+stype.decode()
@@ -53,14 +53,14 @@ def tcp_recv(byte):
         idata=int.from_bytes(bdatalen,byteorder='little')
         print((idata))
         loc+=4
-       # a = b'i am request,\xE6\x88\x91\xE6\x98\xAF\xE8\xAF\xB7\xE6\xB1\x82'.decode('utf-8')
-       # print(a)
-        #sdata=bytes.fromhex(str(byte[loc:])).decode('utf-8')
         bdata=byte[loc:]
-        print(len(bdata))
-        print(bdata)
-      #  print("recv data:"+sdata+"size:"+str(len(sdata)))
-        file_write(bdata.decode())
+        if(len(bdata) >0):
+            balldata+=(bdata)
+            print(bdata)
+        else:
+            print("ready to write file")
+            file_write(balldata.decode())
+            balldata.clear()
     else:
         print("head error")
 def file_write(byte):
