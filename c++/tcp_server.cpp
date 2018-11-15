@@ -259,8 +259,6 @@ void tcp_server::selectIO()
     if(FD_ISSET(isockfd,&readset))
     {
 	s_accept();
-	add_newclient(iconn);
-	FD_SET(iconn,&allset);
     }   
     for(int iTrun =0 ;iTrun <MAXLINKS; iTrun++)
     {
