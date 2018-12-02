@@ -8,6 +8,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
+from tcp_client import CTcpClient
+Client=CTcpClient()
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -59,7 +61,13 @@ class Ui_Form(object):
        # self.toolButton.clicked.connect(lambda: self.slot_tbfile())
 
     def slot_pbok(self):
-        pass
+        strPath=self.label.text().strip()
+        print(strPath)
+        strName,strType=self.file_msg(strPath)
+        strFile=strName+strType
+        Client.set_file_name(strFile)
+        Client.file_read(strPath)
+        Client.init()
 
     def slot_pbcancel(self):
         self.label.setText(" ")

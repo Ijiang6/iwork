@@ -53,7 +53,7 @@ class CFileTool():
 # file read & write
     def setFile(self,strpath,mode):
         try:
-            self.mfile=open(strPath,mode)
+            self.mfile=open(strpath,mode)
         except IOError:
             print("file not accessible")
         except FileNotFoundError:
@@ -71,7 +71,7 @@ class CFileTool():
     def fileToStr(self,strFilePath):
         return self.mfile.read()
 
-    def fileToLines(self,strFilePath):
+    def fileToLines(self):
         return self.mfile.readlines()
     
     def writeFile(self,data):
