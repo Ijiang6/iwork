@@ -16,7 +16,16 @@ void tcp_server::init_select()
  {
      client[iTrun]=-1;
  }
- //signal(SIGALRM,selectIO);
+ if(ilisten != 0)
+ {
+ cout<<"listen num:"<<ilisten;
+ return ;
+ }
+// s_accept();
+// setSockNoneBlock();
+FD_SET(isockfd,&allset);
+timer.tv_sec=0;
+timer.tv_usec=0;
 }
 bool tcp_server::sock_addr_init(int iport)
 {
@@ -67,19 +76,27 @@ bool tcp_server::s_accept()
     struct sockaddr_in c_addr;
     socklen_t c_len=sizeof(c_addr);
     iconn =accept(isockfd,(struct sockaddr *)&c_addr,&c_len);
-    if(iconn>0)
-    {   
-	cout<<"receive new connection"<<endl;
-	add_newclient(iconn);
-	FD_SET(iconn,&allset);
-	return true;
-
+    cout<<"iconn:"<<iconn<<endl;
+    if(iconn == -1)
+    {
+        cout<<"appept error "<<endl;
+       return false;
     }
     else
     {
-    return false;
+        //建立连接成功
+      cout<<"receive new connection"<<endl;
+      add_newclient(iconn);
+        FD_SET(iconn,&allset);
+     return true;
+
     }
 
+}
+void tcp_server::setSockNoneBlock()
+{
+    int flags=fcntl(isockfd,F_GETFL,0);
+    fcntl(isockfd,F_GETFL,flags|O_NONBLOCK);
 }
 int tcp_server::byte_to_int(const char *pbuf)
 {
@@ -96,6 +113,7 @@ void tcp_server::insertOneLineStr(const string & strName,const string & strLine)
     if(it != m_mapfile.end())
     {
 	it->second.push_back(strLine);
+    cout<<"line strData"<<endl;
     }
     else
     {
@@ -114,11 +132,11 @@ void tcp_server::saveFile(const string & strFile)
     {
 	 m_file_task.setOutFIle(strFile);
 	m_file_task.setRun(false);
-        CThread_Pool::getInstance()->addTask(&m_file_task);
+    CThread_Pool::getInstance()->addTask(&m_file_task);
     }
 }
 bool tcp_server::data_recv(int icon)
-{   icon=iconn;
+{
     memset(buf,0,sizeof(buf)); 
     read(icon,buf,sizeof(buf));
     cout<<"recv:"<<buf<<endl;
@@ -175,11 +193,9 @@ bool tcp_server::date_write(int icon,const string &strType,const string & strNam
 {
     //$+4byte+strType+4byte+strNmae+4byte+strData
     string strPacket;
-    icon=iconn;
-    
     char chs='$';
     char *pchsSize=NULL;
-    strPacket.append(&chs);
+    strPacket.append(&chs,1);
     
     pchsSize=int_to_byte(strType.size());
     strPacket.append(pchsSize,4);
@@ -192,13 +208,14 @@ bool tcp_server::date_write(int icon,const string &strType,const string & strNam
     pchsSize=int_to_byte(strData.size());
     strPacket.append(pchsSize,4);
     strPacket.append(strData);
-
+  cout<<"line size->"<<strData.size()<<"pack size->"<<strPacket.size()<<endl;
     write(icon,strPacket.c_str(),strPacket.size());
     return true;
 }
 int tcp_server::update_maxfd()
 {
     int maxtemp=0;
+    int iNum=0;
     for(int iTrun=0;iTrun<sizeof(allset);iTrun++)
     {
 	if(FD_ISSET(iTrun,&allset))
@@ -206,14 +223,14 @@ int tcp_server::update_maxfd()
 	    if(iTrun>maxtemp)
 	    {
 	    maxtemp=iTrun;
-	    break;
 	    }
+        iNum++;
 	}
     }
-    if(maxtemp > MAXLINKS)
+    if(iNum > MAXLINKS)
     {
-    cout<<"beyond max links,no recv new links"<<endl;
-    FD_CLR(isockfd,&allset); 
+     cout<<"beyond max links,no recv new links"<<endl;
+     FD_CLR(isockfd,&allset);
     }
     return maxtemp;
 }
@@ -222,77 +239,86 @@ void tcp_server::add_newclient(int clietn_conn)
       for(int iTrun = 0;iTrun < MAXLINKS; iTrun++)
       {
         if(client[iTrun]<0)
-	{
-	    client[iTrun] = clietn_conn;
-	}
+            {
+                client[iTrun] = clietn_conn;
+                break;
+             }
       }
 }
 void tcp_server::selectIO()
 {
-    if(ilisten != 0)
-    {
-	cout<<"listen num:"<<ilisten;
-    return ;
-    }
- FD_SET(isockfd,&allset);
- timeval timer;
- timer.tv_sec=10;
- timer.tv_usec=0;
- 
-// while(1)
+ // while(1)
  {
     FD_ZERO(&readset);
     FD_ZERO(&writeset);
-    //readset=allset;
     memcpy(&readset,&allset,sizeof(allset));
     writeset=readset;
     maxfd=update_maxfd();
     cout<<"maxfd:"<<maxfd<<"isockfd:"<<isockfd<<endl;
-  //  FD_SET(isockfd,&readset);
     int ireadynum=select(maxfd+1,&readset,&writeset,NULL,&timer);
     cout<<"ireadnum:"<<ireadynum<<endl;
     if(ireadynum < 0 || ireadynum == 0 )
     {
 	cout<<"no fd ready"<<endl;
-	continue;
+    return;
     } 
     if(FD_ISSET(isockfd,&readset))
     {
-	s_accept();
-    }   
+        s_accept();
+    }
+
     for(int iTrun =0 ;iTrun <MAXLINKS; iTrun++)
     {
-	int icon=client[iTrun];
-	if(icon < 0)
+    int icon=client[iTrun];
+    if(icon < 0)
+    {
+     continue;
+    }
+    if(FD_ISSET(icon,&readset))
+    {
+        data_recv(iconn);
+    }
+    if(FD_ISSET(icon,&writeset))
 	{
-	 continue;
-	}
-	if(FD_ISSET(icon,&readset))
-	{
-	    data_recv(icon);
-	} 
-	if(FD_ISSET(icon,&writeset))
-	{
-	    string strLine=pfile->popOnestr();
-	  date_write(icon,fileType,fileName,strLine);
+        if(pfile==NULL)
+        {
+            continue;
+        }
+        string strLine=pfile->popOnestr();//string("i am request,\xE6\x88\x91\xE6\x98\xAF\xE8\xAF\xB7\xE6\xB1\x82");//
+//       if(strLine.empty())
+//       {
+//           continue;
+//       }
+        date_write(icon,fileType,fileName,strLine);
 	}
     }
  }
 
-
+}
+int tcp_server::getProcess()
+{
+    if(pfile==NULL)
+    {
+        return 0;
+    }
+    return pfile->getProcess();
 
 }
-void tcp_server::readfiletest()
+void tcp_server::setFileMsg(const string & strName,const string & strType)
+{
+    fileName=strName;
+    fileType=strType;
+}
+void tcp_server::readfiletest(const string & path)
 {
     pfile=new file_task();
-    pfile->setInFile("./demo.txt");
+    pfile->setInFile(path);
     pfile->setRun(true);
-    fileType="txt";
-    fileName="demo";
     CThread_Pool::getInstance()->addTask(pfile);
 
 }
-int  main(int argc ,char*argv[])
+/*
+ * int  main(int argc ,char*argv[])
 {
    tcp_server server;
    server.readfiletest();
@@ -307,4 +333,4 @@ int  main(int argc ,char*argv[])
    // server.selectIO();
 return 0;
 
-}
+}*/

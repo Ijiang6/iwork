@@ -13,7 +13,7 @@
 #include"thread_pool.h"
 #include<map>
 #include<vector>
-#include<signal.h>
+#include<fcntl.h>
 #define MAXLINKS 5
 using std::cout;
 using std::endl;
@@ -35,9 +35,12 @@ class tcp_server
     int byte_to_int(const char *pbuf);
     char * int_to_byte(int iNum);
     void add_newclient(int clietn_conn);
-    void readfiletest();
+    void readfiletest(const string & path);
     void insertOneLineStr(const string & strName,const string &strLine);
     void saveFile(const string & strFile);
+    void setFileMsg(const string & strName,const string & strType);
+    void setSockNoneBlock();
+    int  getProcess();
  private:
     struct sockaddr_in s_addr;
     int isockfd;
@@ -54,5 +57,6 @@ class tcp_server
     string fileType;
     string fileName;
     file_task *pfile;
+    timeval timer;
 };
 #endif

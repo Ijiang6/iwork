@@ -1,7 +1,6 @@
 #include"file_task.h"
 file_task::file_task():CThread_Task()
 {
-
 }
 file_task::~file_task()
 {
@@ -18,7 +17,7 @@ void file_task::setOutFIle(const string & strPath)
 }
 void file_task::readFile()
 {
-    vector<string> vfile;
+    iProcess=0;
     string strTemp;
     m_Instream.open(m_strInFile);
    if(!m_Instream.is_open())
@@ -54,15 +53,32 @@ void file_task::writefile()
     }
   m_Outstream.close();
 }
+
+int file_task::getProcess()
+{
+    if(!vfile.size())
+    {
+        return 100;
+    }
+    return iProcess/vfile.size();
+
+
+}
 const string file_task::popOnestr()
 {
-    string str;
+    string str="";
+  //  vfile.push_back("abc");
+    if(vfile.empty())
+    {
+        return str;
+    }
     vector<string>::iterator it=vfile.begin();
     cout<<"cfile size:"<<vfile.size();
     if(it != vfile.end())
     {
         str=*it;
         vfile.erase(it);
+        iProcess++;
     }
     return str;
 }

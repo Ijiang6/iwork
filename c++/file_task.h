@@ -19,6 +19,7 @@ public:
     void writefile();	
     void setWriteFile(const vector<string> & vecFile);
     void setRun(bool bread);
+    int getProcess();
     virtual void* run();
     const string popOnestr();
 private:
@@ -30,6 +31,7 @@ private:
     bool m_bFinsh;
     bool m_bread;
     vector<string> vfile;
-
+     int iProcess;
 };
+
 #endif
