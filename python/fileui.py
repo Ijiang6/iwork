@@ -6,6 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 import sys
+import time
+import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from tcp_client import CTcpClient
@@ -55,11 +57,10 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "filename"))
         self.pushButton.setText(_translate("Form", "cancel"))
         self.pushButton_2.setText(_translate("Form", "ok"))
-  #  def __init__(self):
-       # self.pushButton.clicked.connect(lambda: self.slot_pbcancel())
-       # self.pushButton_2.clicked.connect(lambda: self.slot_pbok())
-       # self.toolButton.clicked.connect(lambda: self.slot_tbfile())
-
+    def __init__(self):
+        global time
+        time=threading.Timer(2,self.update_progress)
+        time.start()
     def slot_pbok(self):
         strPath=self.label.text().strip()
         print(strPath)
@@ -71,6 +72,8 @@ class Ui_Form(object):
 
     def slot_pbcancel(self):
         self.label.setText(" ")
+        Client.tcp_close()
+        self.close()
 
     def file_msg(self,strPath):
         filePath=strPath.strip()
@@ -87,6 +90,15 @@ class Ui_Form(object):
         self.label.setText(file_path)
         fname,ftype=self.file_msg(file_path)
         print(fname,ftype)
+    def closeEvent(self,event):
+        Client.tcp_close()
+        print("tcp_close")
+        event.accept()
+    def update_progress(self):
+        self.progressBar.setValue(Client.get_progress())
+        global time
+        time=threading.Timer(2,self.update_progress)
+        time.start()
 
 if __name__=='__main__':
 

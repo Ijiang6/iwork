@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 from socket import *
 import select
+import time
+import threading
 from filetool import *
 file_name=''
 balldata=bytes()
@@ -8,19 +10,24 @@ read=[]
 write=[]
 filelines=[]
 filetool=CFileTool()
+progress=int(0)
 class CTcpClient():
     def tcp_client(self,HOST,PORT):
+        global tcpClient
         ADDR=(HOST,PORT)
         tcpClient= socket(AF_INET,SOCK_STREAM)
         tcpClient.connect(ADDR)
         read.append(tcpClient)
         write.append(tcpClient)
         print("link server success")
-        while True:
-            self.tcp_data(tcpClient)
+#        while True:
+ #           self.tcp_data(tcpClient)
+        global timer
+        timer=threading.Timer(2,self.tcp_data)    
+        timer.start()
 
-
-    def tcp_data(self,tcpClient):
+    def tcp_data(self):
+        global tcpClient
         r_list,w_list,e_list=select.select(read,write,read,1)
         for sk in w_list:
             try:
@@ -43,17 +50,22 @@ class CTcpClient():
         for sk in e_list:
             sk.close()
             print('close socket')
-
+        
+        timer=threading.Timer(2,self.tcp_data)    
+        timer.start()
 
     def tcp_send(self):
         #global file_name
         #file_name='demo.txt'
+        global progress
         print(file_name)
         filemsg=file_name.split('.')
         str_type=filemsg[1]
         str_name=filemsg[0]
         if filelines is not None:
             str_data=filelines.pop(0)
+            progress+=1
+            
         else:
             return
         btype=str_type.encode()
@@ -116,6 +128,14 @@ class CTcpClient():
     def set_file_name(self,strfile):
         global file_name
         file_name=strfile
+    def tcp_close(self):
+        global tcpClient
+        tcpClient.close()
+    def get_progress(self):
+        if(len(filelines)==0):
+            return 0
+        else:
+            return progress/len(filelines)
     def init(self):
         HOST='127.0.0.1'
         PORT=8989
