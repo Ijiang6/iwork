@@ -1,0 +1,12 @@
+一、踩坑 指针传递数组
+char buf[1024];
+
+void fun(char *p)
+{
+...
+
+}
+
+fun(buf);//在fun函数中p指向buf第一元素地址，调试时只能看到p指向内容为 sizeof(p)指针在当前系统长度 32位->4 64位->8 buf[1024]中指针长度值
+
+**void fun(char *p, int size); **应该传入size 这样才能在fun函数中通过便宜指针获取buf[1024]全部值
