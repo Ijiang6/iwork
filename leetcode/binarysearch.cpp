@@ -114,6 +114,59 @@ bool BinarySearch::fun_4(const vector<int> & vSrc,const int iKey,int &iIndex)
         }
      return iIndex<0 ? false :true;
 }
+bool BinarySearch::fun_6(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    int iLeft = 0;
+    //[iLeft,iRight)
+    int iRight = vSrc.size();
+    int mid;
+    //[iLeft,iRight)
+    //->iLeft <= iRight
+    // iLeft = iRight+1 ([3,2]) ->break
+     while (iLeft <= iRight) {
+         mid = iLeft+((iRight-iLeft)/2 );//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid - 1;
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid + 1;
+          } else
+         {
+             iIndex= mid;
+             break;
+          }
+        }
+     return iIndex<0 ? false :true;
+}
+bool BinarySearch::fun_7(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    int iLeft = 0;
+    //[iLeft,iRight)
+    int iRight = vSrc.size();
+    int mid;
+    //[iLeft,iRight)
+    //->iLeft <iRight
+    // iLeft == iRight([2,2]) ->break
+     while (iLeft < iRight) {
+         mid = iLeft+((iRight-iLeft)/2 );//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid - 1;
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid + 1;
+          } else
+         {
+             iIndex= mid;
+             break;
+          }
+        }
+     iIndex= vSrc[iLeft]== iKey ? iLeft:-1;
+     return iIndex<0 ? false :true;
+}
 bool BinarySearch::fun_5(const vector<int> & vSrc,const int iKey,int &iIndex)
 {
     iIndex=fun_recursive(vSrc,iKey,0,vSrc.size()-1);
@@ -139,4 +192,107 @@ int BinarySearch::fun_recursive(const vector<int> & vSrc,const int iKey,int iLef
         fun_recursive(vSrc,iKey,iLeft,iMid-1);
     }
 
+}
+bool BinarySearch::fun_LeftBound_1(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    //{2,3,4,5,6,6,6,6,7,8,9}
+    // size( vSrc<iKey)
+    int iLeft = 0;
+    int iRight = vSrc.size() - 1;//<-------------
+    int mid;
+     while (iLeft < iRight)//<-------------
+     {
+         mid = iLeft+((iRight-iLeft)>>1);//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid;//<-------------
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid+1;
+          } else
+         {
+             iRight= mid;
+          }
+        }
+      iIndex=iLeft;
+     return iIndex<0 ? false :true;
+
+}
+bool BinarySearch::fun_LeftBound_2(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    //{2,3,4,5,6,6,6,6,7,8,9}
+    // size( vSrc<iKey)
+    int iLeft = 0;
+    int iRight = vSrc.size();//<-------------
+    int mid;
+     while (iLeft < iRight)//<-------------
+     {
+         mid = iLeft+((iRight-iLeft)>>1);//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid;//<-------------
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid+1;
+          } else
+         {
+             iRight= mid;
+          }
+        }
+     iIndex=iLeft == vSrc.size() ?-1 :iLeft;
+     return iIndex<0 ? false :true;
+}
+bool BinarySearch::fun_RightBound_1(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    //{2,3,4,5,6,6,6,6,7,8,9}
+    // size( vSrc<iKey)
+    int iLeft = 0;
+    int iRight = vSrc.size() - 1;//<-------------
+    int mid;
+     while (iLeft < iRight)//<-------------
+     {
+         mid = iLeft+((iRight-iLeft)>>1);//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid-1;
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid;//<-------------
+          } else
+         {
+             iLeft= mid;
+          }
+        }
+      iIndex=iRight;
+     return iIndex<0 ? false :true;
+
+}
+bool BinarySearch::fun_RightBound_2(const vector<int> & vSrc,const int iKey,int &iIndex)
+{
+    //{2,3,4,5,6,6,6,6,7,8,9}
+    // size( vSrc<iKey)
+    int iLeft = 0;
+    int iRight = vSrc.size();//<-------------
+    int mid;
+     while (iLeft < iRight)//<-------------break iLeft == iRight
+     {
+         mid = iLeft+((iRight-iLeft)>>1);//no overflow
+         if (vSrc[mid] > iKey)
+         {
+            iRight = mid;
+         }
+         else if (vSrc[mid] < iKey)
+         {
+              iLeft = mid+1;//<-------------
+          } else
+         {
+             //==
+             iLeft= mid+1;//<-------------
+          }
+        }
+     iIndex=iRight ==0 ?-1 :iRight-1;
+     return iIndex<0 ? false :true;
 }
