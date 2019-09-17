@@ -28,13 +28,36 @@ int RemoveDuplicatesSoredArray::fun1(int a[] ,int n)
 }
 int RemoveDuplicatesSoredArray::fun2(int a[] ,int n)
 {
+    if ( n < 3 )
+    {
+        return n;
+    }
+    int iLength =0;
+    for ( int iIndex =0 ; iIndex < n ; iIndex++ )
+    {
+        if( iIndex >0 && iIndex < n -1  && a[iIndex -1] == a[iIndex] && a[iIndex] == a[iIndex+1] )
+        {
+            // index:0 1 2 3 4 5
+            //value :1 1 1 2 2 3
+            continue;//a[1]
+        }
+        /*
+         *a[0] = a[0] ->iLength = 1 -> 1 1 1 2 2 3
+         *a[1] = a[2] ->iLength = 2 -> 1 1 1 2 2 3
+         *a[2] = a[3] ->iLength = 3 -> 1 1 2 2 2 3
+         *a[3] = a[4] ->iLength = 4 -> 1 1 2 2 2 3
+         *a[4] = a[5] ->iLength = 5 -> 1 1 2 2 3 3
+         */
+        a[iLength++] = a[iIndex];
 
+    }
+    return  iLength;
 
 }
 RemoveDuplicatesSoredArray::RemoveDuplicatesSoredArray()
 {
 
     int array[] ={ 1,1,1,2,2,3 };
-    cout <<"--->"<< fun1(array,LEN(array))<<endl<<array;
+    cout <<"--->"<< fun2(array,LEN(array))<<endl;
 
 }
