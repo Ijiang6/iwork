@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>NavLeftWgt.qml</file>
+        <file>MusicPlay.qml</file>
+        <file>MainWgt.qml</file>
+        <file>MusicPicture.qml</file>
+        <file>Recommend.qml</file>
+        <file>MusicListItem.qml</file>
+        <file>LocalMusic.qml</file>
+        <file>RankList.qml</file>
+        <file>LatestMusic.qml</file>
+        <file>MusicInfoTable.qml</file>
+        <file>NavTabBar.qml</file>
+    </qresource>
+    <qresource prefix="/music"/>
+</RCC>

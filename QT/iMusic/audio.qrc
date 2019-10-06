@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/audio">
+        <file>audio/Delacey - Dream It Possible.mp3</file>
+    </qresource>
+</RCC>
