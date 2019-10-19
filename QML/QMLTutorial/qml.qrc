@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>RectangleView.qml</file>
+        <file>TextView.qml</file>
+        <file>MourseAreaView.qml</file>
+        <file>PropertyView.qml</file>
+        <file>ImageView.qml</file>
+        <file>ImportLibraryView.qml</file>
+        <file>TextInputView.qml</file>
+        <file>FlickableView.qml</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file>image/7.jpg</file>
+    </qresource>
+</RCC>

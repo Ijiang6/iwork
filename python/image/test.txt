@@ -1,0 +1,4 @@
+sudo gedit /etc/ld.so.conf ->/etc/ld.so.conf.d/*.conf
+
+
+
