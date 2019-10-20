@@ -9,8 +9,16 @@
         <file>ImportLibraryView.qml</file>
         <file>TextInputView.qml</file>
         <file>FlickableView.qml</file>
+        <file>Keysview.qml</file>
+        <file>KeyNavAndActiveView.qml</file>
+        <file>GridAndRepeatedView.qml</file>
+        <file>ModelView.qml</file>
+        <file>ModelData.qml</file>
+        <file>ModelDel.qml</file>
+        <file>ModelHeadView.qml</file>
     </qresource>
     <qresource prefix="/image">
         <file>image/7.jpg</file>
+        <file>image/youtube-to-mp3.png</file>
     </qresource>
 </RCC>

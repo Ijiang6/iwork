@@ -14,8 +14,7 @@ Window {
         spacing: 15
         Button {
             id: buttonrec
-            x: 93
-            y: 79
+
             text: qsTr("Rectangle")
             onClicked:
             {
@@ -25,8 +24,7 @@ Window {
         }
         Button {
             id: buttontext
-            x: 93
-            y: 79
+
             text: qsTr("Text")
             onClicked:
             {
@@ -36,8 +34,7 @@ Window {
         }
         Button {
             id: buttonMouse
-            x: 93
-            y: 79
+
             text: qsTr("MousrArea")
             onClicked:
             {
@@ -46,8 +43,7 @@ Window {
         }
         Button {
             id: buttonProperty
-            x: 93
-            y: 79
+
             text: qsTr("Proterty - Signal-Slot")
             onClicked:
             {
@@ -56,8 +52,7 @@ Window {
         }
         Button {
             id: buttonImage
-            x: 93
-            y: 79
+
             text: qsTr("Image")
             onClicked:
             {
@@ -66,8 +61,7 @@ Window {
         }
         Button {
             id: buttonLibrary
-            x: 93
-            y: 79
+
             text: qsTr("Library")
             onClicked:
             {
@@ -76,14 +70,83 @@ Window {
         }
         Button {
             id: buttonFlickable
-            x: 93
-            y: 79
+
             text: qsTr("flickable")
             onClicked:
             {
                 flickableview.visible=true
             }
         }
+        Button {
+            id: buttonKeys
+
+            text: qsTr("Keys")
+            onClicked:
+            {
+                keyview.visible=true
+            }
+        }
+        Button {
+            id: buttonKeynavactive
+
+            text: qsTr("KeyNavActive")
+            onClicked:
+            {
+                keynavview.visible=true
+            }
+        }
+       Button {
+            id: buttonGridAndRepeated
+
+            text: qsTr("GridAndRepeated")
+            onClicked:
+            {
+                gridreview.visible=true
+             }
+        }
+       Button {
+            id: buttonModelView
+
+            text: qsTr("ModelView")
+            onClicked:
+            {
+                iModelview.visible=true
+             }
+        }
+    }
+    Window
+    {
+        id:gridreview
+       GridAndRepeatedView
+        {
+            id:grifreId
+            anchors.fill: parent
+        }
+        visible: false
+    }
+    Window
+    {
+        id:keyview
+       Keysview
+        {
+            id:keyId
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+        visible: false
+    }
+    Window
+    {
+        id:iModelview
+       ModelView
+        {
+
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+        visible: false
     }
     Window
     {
@@ -93,6 +156,8 @@ Window {
             id:flickableId
             anchors.fill: parent
         }
+       width: 640
+       height: 480
         visible: false
     }
     Window
@@ -101,6 +166,18 @@ Window {
         TextInputView
         {
             id:textinputId
+            anchors.fill: parent
+        }
+        width: 640
+        height: 480
+        visible: false
+    }
+    Window
+    {
+        id:keynavview
+        KeyNavAndActiveView
+        {
+            id:keynavId
             anchors.fill: parent
         }
         width: 640
