@@ -16,9 +16,15 @@
         <file>ModelData.qml</file>
         <file>ModelDel.qml</file>
         <file>ModelHeadView.qml</file>
+        <file>XMLlistModelView.qml</file>
+        <file>JavascripFileView.qml</file>
     </qresource>
     <qresource prefix="/image">
         <file>image/7.jpg</file>
         <file>image/youtube-to-mp3.png</file>
+        <file>data.xml</file>
+    </qresource>
+    <qresource prefix="/script">
+        <file>JavaScript/ImageError.js</file>
     </qresource>
 </RCC>

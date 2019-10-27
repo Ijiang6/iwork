@@ -7,11 +7,11 @@ Item {
     {
         id:modeldata
     }
-    ModelDel
-    {
-        id:del
-        //error  when create , the data not map
-    }
+    //    ModelDel
+    //    {
+    //        id:del
+    //        //error  when create , the data not map
+    //    }
 
     ListView
     {

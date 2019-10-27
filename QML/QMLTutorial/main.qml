@@ -113,6 +113,46 @@ Window {
                 iModelview.visible=true
              }
         }
+       Button {
+            id: buttonxmlModelView
+
+            text: qsTr("XmlListModelView")
+            onClicked:
+            {
+                xmldoelview.visible=true
+             }
+        }
+       Button {
+            id: buttonjsfileView
+
+            text: qsTr("XmlListModelView")
+            onClicked:
+            {
+                jsfileview.visible=true
+             }
+        }
+    }
+    Window
+    {
+        id:jsfileview
+       JavascripFileView
+        {
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+      visible: false
+    }
+    Window
+    {
+        id:xmldoelview
+       XMLlistModelView
+        {
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+      visible: false
     }
     Window
     {
