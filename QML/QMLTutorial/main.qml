@@ -125,12 +125,53 @@ Window {
        Button {
             id: buttonjsfileView
 
-            text: qsTr("XmlListModelView")
+            text: qsTr("jsfileView")
             onClicked:
             {
                 jsfileview.visible=true
              }
         }
+       Button {
+           id: sequeanimationView
+
+           text: qsTr("sequeanimationView")
+           onClicked:
+           {
+               sequeanimationview.visible=true
+            }
+       }
+       Button {
+           id: anchoranimationView
+
+           text: qsTr("sequeanimationView")
+           onClicked:
+           {
+               anchoranimationview.visible=true
+            }
+       }
+
+    }
+    Window
+    {
+        id:anchoranimationview
+       AnimationAnchor
+        {
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+      visible: false
+    }
+    Window
+    {
+        id:sequeanimationview
+       RecAnimation
+        {
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+      visible: false
     }
     Window
     {

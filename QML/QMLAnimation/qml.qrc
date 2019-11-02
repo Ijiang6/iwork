@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>AnimationView.qml</file>
+    </qresource>
+</RCC>

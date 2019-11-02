@@ -18,11 +18,17 @@
         <file>ModelHeadView.qml</file>
         <file>XMLlistModelView.qml</file>
         <file>JavascripFileView.qml</file>
+        <file>RecAnimation.qml</file>
+        <file>AnimationAnchor.qml</file>
     </qresource>
     <qresource prefix="/image">
         <file>image/7.jpg</file>
         <file>image/youtube-to-mp3.png</file>
         <file>data.xml</file>
+        <file>image/vokoscreen.png</file>
+        <file>image/smtube.png</file>
+        <file>image/musicbrainz.png</file>
+        <file>image/Local.png</file>
     </qresource>
     <qresource prefix="/script">
         <file>JavaScript/ImageError.js</file>
