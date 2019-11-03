@@ -149,7 +149,45 @@ Window {
                anchoranimationview.visible=true
             }
        }
+       Button {
+           id: audioView
 
+           text: qsTr("AudioView")
+           onClicked:
+           {
+               audioiew.visible=true
+            }
+       }
+       Button {
+           id: simpledialogView
+
+           text: qsTr("SimpleDialog")
+           onClicked:
+           {
+               simpledialog.visible=true
+            }
+       }
+       Button {
+           id: simpledialogView_2
+
+           text: qsTr("SimpleDialog_2")
+           onClicked:
+           {
+               simpledialog_2.visible=true
+            }
+       }
+
+    }
+
+    SimpleDialog
+    {
+        id:simpledialog
+        visible: false
+    }
+    SimpleDialog_2
+    {
+        id:simpledialog_2
+        visible: false
     }
     Window
     {
@@ -166,6 +204,17 @@ Window {
     {
         id:sequeanimationview
        RecAnimation
+        {
+            anchors.fill: parent
+        }
+       width: 640
+       height: 480
+      visible: false
+    }
+    Window
+    {
+        id:audioiew
+       AudioView
         {
             anchors.fill: parent
         }
