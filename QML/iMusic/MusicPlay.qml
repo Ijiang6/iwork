@@ -5,6 +5,13 @@ import QtQuick .Layouts 1.2
 import QtMultimedia 5.11
 Rectangle {
     property alias button1: buttonpaly
+    property  var utilDate: new Date()
+    function msecToString(msec)
+    {
+        utilDate.setTime(msec)
+        return Qt.formatTime(utilDate,"mm:ss")
+    }
+
     //http://localhost:3000/song/url?id=33894312
     function updatePaly(sID,sName)
     {
@@ -39,15 +46,23 @@ Rectangle {
         source: "file:/home/hacker/Qt/work/build-audioTest-Desktop_Qt_5_11_2_GCC_64bit-Debug/Delacey - Dream It Possible.mp3"
         onPlaying:function()
         {
-            var pos =mediaplayer.position
-
             console.log("pos"+pos+"/"+mediaplayer.metaData.size)
-            slider.value = pos
-             buttonpaly.icon.source= "qrc:/icons/Icons/ooopic_1569151262.png"
+            buttonpaly.icon.source= "qrc:/icons/Icons/ooopic_1569151262.png"
         }
         onPaused: function()
         {
             buttonpaly.icon.source= "qrc:/icons/Icons/ooopic_1569151249.png"
+        }
+        onPositionChanged:
+        {
+            labeltime.posStr =  msecToString(position)
+            slider.curPos=position
+        }
+
+        onDurationChanged:
+        {
+            labeltime.durStr =  msecToString(duration)
+            slider.maxlen = duration
         }
 
     }
@@ -83,7 +98,7 @@ Rectangle {
                 height: 30
                 Layout.fillHeight: true
                 padding: 4
-                focusPolicy: Qt.NoFocus
+                focusPolicy: Qt.NoFocuse
                 transformOrigin: Item.Center
                 font.bold: false
                 font.italic: false
@@ -127,12 +142,34 @@ Rectangle {
                         id: slider
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        value: 0
+                        value: curPos
+                        from:0
+                        to:maxlen
+                        property var maxlen:100
+                        property var curPos:10
+                        handle: Rectangle
+                        {
+                            anchors.centerIn:parent
+                            color:"transparent" //颜色
+                            //border.color:"darkCyan"
+                            border.width:1
+                            width:50
+                            height:20
+                            radius:10
+                            Text
+                            {
+                                anchors.centerIn: parent
+                                text:labeltime.posStr
+                            }
+                        }
                     }
 
                     Label {
-                        id: label1
-                        text: qsTr("00.00/05:20")
+
+                        id: labeltime
+                        text: /*posStr+"/"+*/durStr
+                        property var posStr:"00.00"
+                        property var durStr:"05:20"
                     }
                 }
             }
@@ -140,11 +177,32 @@ Rectangle {
 
         RowLayout {
 
-            Button {
-                id: button3
-                Layout.fillHeight: true
-                icon.source:  "qrc:/icons/Icons/audio-volume.png"
-                icon.color:"transparent" //颜色
+            RowLayout {
+                Button
+                {
+                    Layout.fillHeight: true
+                    icon.color:"transparent" //颜色
+                    icon.source: "qrc:/icons/Icons/audio-volume.png"
+                    onClicked: {
+                        volumeslider.visible = !volumeslider.visible
+                    }
+                }
+                Slider {
+                    Layout.fillHeight: true
+                    id: volumeslider
+                    value: 80
+                    from:0
+                    to:100
+                    visible: false
+                    handle: Rectangle
+                    {
+                    }
+                    onValueChanged:
+                    {
+                        mediaplayer.volume = value/volumeslider.to
+                    }
+
+                }
             }
 
             Button {
@@ -152,23 +210,18 @@ Rectangle {
                 Layout.fillHeight: true
                 icon.color:"transparent" //颜色
                 //listsequence.png
-                icon.source:  "qrc:/icons/Icons/listsequence.png"
+                icon.source: "qrc:/icons/Icons/listsequence.png"
             }
 
             Button {
                 id: button5
                 Layout.fillHeight: true
-                 icon.color:"transparent" //颜色
-                 icon.source:  "qrc:/icons/Icons/btnlist.png"
+                icon.color:"transparent" //颜色
+                icon.source:  "qrc:/icons/Icons/btnlist.png"
             }
         }
     }
-
 }
-
-
-
-
 /*##^## Designer {
     D{i:0;autoSize:true;height:50;width:640}
 }
