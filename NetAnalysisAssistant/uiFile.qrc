@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qss/dark.qss</file>
+        <file>qss/Gravira.qss</file>
+        <file>qss/machinery.qss</file>
+        <file>qss/SpyBot.qss</file>
+        <file>image/Cards.png</file>
+        <file>image/Grap.png</file>
+        <file>image/TCP.png</file>
+        <file>image/Tool.png</file>
+        <file>image/UDP.png</file>
+        <file>image/real.png</file>
+        <file>image/stop.png</file>
+    </qresource>
+</RCC>

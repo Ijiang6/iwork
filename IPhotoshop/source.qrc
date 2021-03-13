@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>icon/float.png</file>
+        <file>icon/float_hover.png</file>
+        <file>icon/hide.png</file>
+        <file>icon/hide_hover.png</file>
+        <file>icon/drag.png</file>
+        <file>icon/drop.png</file>
+        <file>icon/saveproject.png</file>
+        <file>icon/zoomIn.png</file>
+        <file>icon/zoomOut.png</file>
+        <file>icon/openproject.png</file>
+    </qresource>
+</RCC>
