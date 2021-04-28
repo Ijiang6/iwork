@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>lenna.png</file>
+        <file>awesomeface.png</file>
+        <file>container.jpg</file>
+        <file>skybox/back.jpg</file>
+        <file>skybox/bottom.jpg</file>
+        <file>skybox/front.jpg</file>
+        <file>skybox/left.jpg</file>
+        <file>skybox/right.jpg</file>
+        <file>skybox/top.jpg</file>
+    </qresource>
+    <qresource prefix="/shaders">
+        <file>fragmentShader.shader</file>
+        <file>vertexShader.shader</file>
+        <file>TriangleGLGLSL3_3CoreFun.fs</file>
+        <file>TriangleGLGLSL3_3CoreFun.vs</file>
+        <file>texture.fs</file>
+        <file>texture.vs</file>
+        <file>CoordGLGLSLExtraFun.fs</file>
+        <file>CoordGLGLSLExtraFun.vs</file>
+        <file>CameraGLGLSLExtraFun.fs</file>
+        <file>CameraGLGLSLExtraFun.vs</file>
+    </qresource>
+</RCC>
